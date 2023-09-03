@@ -1,0 +1,48 @@
+.nav {
+    width: 100vw;
+    height: 80px;
+    padding: 10px 0p;
+    position: fixed;
+    background-color: #443e3e;
+    display: flex;
+    /* justify-content: center; */
+}
+
+.nav .container {
+    width: calc(min(1300px, 100%));
+    height: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    align-items: center;
+    user-select: none;
+}
+
+.iconNav {
+    height: 100%;
+}
+
+ul {
+    display: flex;
+    gap: 20px;
+}
+
+li {
+    list-style: none;
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+    color: #ccc;
+}
+
+a.active {
+    color: yellow;
+}
+
+img {
+    height: 100%;
+}
