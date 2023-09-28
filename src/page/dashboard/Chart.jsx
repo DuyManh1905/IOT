@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Line } from "react-chartjs-2";
+import { ContextStore } from "../../context/ContextStore";
 
 const colorCodes = [
-    "#FF0000", // Đỏ
     "#0000FF", // Xanh dương
-    "#008000", // Xanh lá cây
+    "#FF0000", // Đỏ
     "#FFFF00", // Vàng
+    "#008000", // Xanh lá cây
     "#FFA500", // Cam
     "#FFC0CB", // Hồng
     "#800080", // Tím
@@ -21,37 +22,7 @@ const colorCodes = [
 
 const colorHex = ["#ff000024", "#0000ff26", "#00800024"];
 
-const Chart = ({ prop, newData }) => {
-    console.log(newData);
-    const labels = [
-        "0",
-        "2",
-        "4",
-        "6",
-        "8",
-        "10",
-        "12",
-        "14",
-        "16",
-        "18",
-        "20",
-        "22",
-        "24",
-        "26",
-        "28",
-        "30",
-        "32",
-        "34",
-    ];
-
-    const [datas, setDatas] = useState(
-        prop.data.map((item) => [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        ])
-    );
-
-    // const [pause, setPause] = useState(false);
-
+const Chart = ({ prop, datas, labels }) => {
     const data = {
         labels: labels,
         datasets: prop.data.map((item, index) => {
@@ -71,6 +42,8 @@ const Chart = ({ prop, newData }) => {
         animation: {
             duration: 0,
         },
+        maintainAspectRatio: false,
+        with: "200px",
         scales: {
             x: {
                 title: {
@@ -92,20 +65,6 @@ const Chart = ({ prop, newData }) => {
             },
         },
     };
-
-    useEffect(() => {
-        setDatas((prop) => {
-            const tmp = [...prop];
-            const result = [];
-            tmp.forEach((element, index) => {
-                let arr = [...element];
-                arr.pop();
-                arr = [newData[index], ...arr];
-                result.push(arr);
-            });
-            return [...result];
-        });
-    }, [newData]);
 
     return (
         <div className="chart">

@@ -20,6 +20,13 @@
 
 .iconNav {
     height: 100%;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.iconNav:hover {
+    background-color: #fff;
+    color: black;
 }
 
 ul {

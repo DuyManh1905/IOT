@@ -1,135 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./style.css";
-const Data = () => {
-    // Sử dụng mảng dữ liệu sẵn có
-    const date = new Date(Date.now());
-    const data = [
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
-        {
-            id: 1,
-            device: "Đèn",
-            state: "OFF",
-            time: `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`,
-        },
 
-        // Thêm dữ liệu khác vào đây
-    ];
+const State = () => {
+    const [actions, setActions] = useState([]);
 
-    const itemsPerPage = 10; // Số lượng dòng trên mỗi trang
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/action").then((response) => {
+            setActions(response.data);
+        });
+        const intervalTime = setInterval(() => {
+            axios.get("http://localhost:8080/action").then((response) => {
+                setActions(response.data);
+            });
+        }, 5000);
+
+        return () => {
+            clearInterval(intervalTime);
+        };
+    }, []);
+
+    const sortActions = (order) => {
+        // Sắp xếp theo ID dựa vào giá trị của biến 'order'
+        const sortedActions = [...actions].sort((a, b) => {
+            if (order === "asc") {
+                return a.id - b.id;
+            } else {
+                return b.id - a.id;
+            }
+        });
+
+        setActions(sortedActions);
+    };
 
     // Tính toán dữ liệu trang hiện tại dựa trên currentPage và itemsPerPage
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = actions.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Hàm chuyển trang
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const maxPage = Math.ceil(actions.length / itemsPerPage);
 
     return (
         <div>
             <h1>Dữ liệu bật tắt đèn</h1>
+            <div className="sort-buttons">
+                <button onClick={() => sortActions("asc")}>
+                    Sắp xếp tăng dần
+                </button>
+                <button onClick={() => sortActions("desc")}>
+                    Sắp xếp giảm dần
+                </button>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -151,22 +78,41 @@ const Data = () => {
                 </tbody>
             </table>
 
-            {/* Phân trang */}
             <div className="pagination">
-                {Array.from({
-                    length: Math.ceil(data.length / itemsPerPage),
-                }).map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => paginate(index + 1)}
-                        className={currentPage === index + 1 ? "active" : ""}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
+                {Array.from({ length: maxPage }).map((_, index) => {
+                    const isStart = index === 0;
+                    const isStartNext = index === 1;
+                    const isEnd = index === maxPage - 1;
+                    const isCurrent = currentPage === index + 1;
+
+                    if (
+                        maxPage <= 5 ||
+                        isStart ||
+                        isStartNext ||
+                        isEnd ||
+                        isCurrent ||
+                        Math.abs(currentPage - (index + 1)) <= 1
+                    ) {
+                        return (
+                            <button
+                                key={index}
+                                onClick={() => paginate(index + 1)}
+                                className={isCurrent ? "active" : ""}
+                            >
+                                {index + 1}
+                            </button>
+                        );
+                    } else if (Math.abs(currentPage - (index + 1)) === 2) {
+                        return (
+                            <button key={index} disabled>
+                                ...
+                            </button>
+                        );
+                    }
+                })}
             </div>
         </div>
     );
 };
 
-export default Data;
+export default State;

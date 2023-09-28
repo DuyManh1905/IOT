@@ -5,6 +5,7 @@ import Dashboard from "./page/dashboard/Dashboard";
 import Profile from "./page/profile/Profile";
 import Sensor from "./page/sensor/Sensor";
 import State from "./page/state/State";
+import { useEffect, useState } from "react";
 
 function App() {
     return (
