@@ -3,9 +3,8 @@
     height: 80px;
     padding: 10px 0p;
     position: fixed;
-    background-color: #443e3e;
+    background-color: rgba(124, 43, 49, 1);
     display: flex;
-    /* justify-content: center; */
 }
 
 .nav .container {

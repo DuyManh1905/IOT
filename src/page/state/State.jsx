@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import "./style.css";
-
 const State = () => {
     const [actions, setActions] = useState([]);
 
@@ -26,6 +24,7 @@ const State = () => {
 
     const sortActions = (order) => {
         // Sắp xếp theo ID dựa vào giá trị của biến 'order'
+
         const sortedActions = [...actions].sort((a, b) => {
             if (order === "asc") {
                 return a.id - b.id;
@@ -48,7 +47,7 @@ const State = () => {
 
     return (
         <div>
-            <h1>Dữ liệu bật tắt đèn</h1>
+            <h1 className="table-heading">Dữ liệu bật tắt đèn</h1>
             <div className="sort-buttons">
                 <button onClick={() => sortActions("asc")}>
                     Sắp xếp tăng dần

@@ -234,6 +234,22 @@ const Dashboard = () => {
                     </div> */}
                 </div>
             </div>
+            <div className="footer">
+                <p className="copyright">
+                    By DuyManh Copyright 2023.com, All rights reserved.
+                </p>
+                <div className="social">
+                    <a href="https://www.facebook.com/manhle2369/">
+                        <img src="facebook.svg" alt="facebook" />
+                    </a>
+                    <a href="https://www.facebook.com/manhle2369/">
+                        <img src="twitter.svg" alt="" />
+                    </a>
+                    <a href="https://www.facebook.com/manhle2369/">
+                        <img src="linkedin.svg" alt="" />
+                    </a>
+                </div>
+            </div>
         </div>
     );
 };

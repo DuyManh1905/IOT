@@ -99,7 +99,7 @@ const Sensor = () => {
 
     return (
         <div>
-            <h1>Lịch sử</h1>
+            <h1 className="table-heading">Lịch sử Data Sensor</h1>
             <div className="date-block">
                 <div className="date-start">
                     <label>Ngày bắt đầu: </label>
@@ -119,9 +119,9 @@ const Sensor = () => {
                 </div>
                 <div className="btn-clear">
                     <button onClick={() => setStartDate("")}>
-                        Xóa bắt đầu
+                        Clear start
                     </button>
-                    <button onClick={() => setEndDate("")}>Xóa kết thúc</button>
+                    <button onClick={() => setEndDate("")}>Clear end</button>
                 </div>
             </div>
             <div className="sensor-block">
@@ -160,9 +160,9 @@ const Sensor = () => {
                     <tr>
                         <th>ID</th>
                         <th>Thời gian</th>
-                        <th>Độ ẩm</th>
-                        <th>Nhiệt độ</th>
-                        <th>Ánh sáng</th>
+                        <th>Độ ẩm(%)</th>
+                        <th>Nhiệt độ(℃)</th>
+                        <th>Ánh sáng(lux)</th>
                     </tr>
                 </thead>
                 <tbody>

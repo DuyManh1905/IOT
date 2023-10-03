@@ -48,7 +48,7 @@ const Chart = ({ prop, datas, labels }) => {
             x: {
                 title: {
                     display: true,
-                    text: "Thời gian(s)",
+                    text: "Thời gian",
                     font: {
                         size: 20, // Kích thước font mong muốn
                     },
