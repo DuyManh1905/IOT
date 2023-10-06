@@ -8,8 +8,10 @@ const StoreProvider = ({ children }) => {
     const [fanState, setFanState] = useState(true);
 
     const data = {
-        data: ["Độ ẩm", "Nhiệt độ", "Ánh sáng"], //them
-        unit: ["%", "℃", "lux"], //them
+        // data: ["Độ ẩm", "Nhiệt độ", "Ánh sáng"], //them
+        // unit: ["%", "℃", "lux"], //them
+        data: ["Nhiệt độ", "Độ ẩm", "Khí gas", "Ánh sáng"],
+        unit: ["℃", "%", "ppm", "lux"],
     };
     const [datas, setDatas] = useState(
         data.data.map((item) => [0, 0, 0, 0, 0, 0, 0])
@@ -24,17 +26,17 @@ const StoreProvider = ({ children }) => {
                 const datatmp = [[], [], [], []]; //them
                 const labeltmp = [];
                 const datanew = [
-                    response.data[response.data.length - 1].humidity,
                     response.data[response.data.length - 1].temperature,
-                    response.data[response.data.length - 1].light,
-                    response.data[response.data.length - 1].dobui, //them
+                    response.data[response.data.length - 1].humidity,
+                    response.data[response.data.length - 1].gas,
+                    response.data[response.data.length - 1].light, //them
                 ];
 
                 response.data.forEach((item) => {
-                    datatmp[0].push(item.humidity);
-                    datatmp[1].push(item.temperature);
-                    datatmp[2].push(item.light);
-                    datatmp[3].push(item.dobui); //them
+                    datatmp[0].push(item.temperature);
+                    datatmp[1].push(item.humidity);
+                    datatmp[2].push(item.gas);
+                    datatmp[3].push(item.light); //them
                     labeltmp.push(item.time.slice(11));
                 });
                 setDatas(datatmp);

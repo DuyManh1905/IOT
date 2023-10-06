@@ -7,24 +7,25 @@ import axios from "axios";
 
 const color = [
     [
-        // do am
-        "linear-gradient(90deg, #ffffff 0%, blue 80%)", //<50
-        "linear-gradient(90deg, #ffffff 0%, blue 50%)", //<50
-    ],
-    [
         //nhiet do
         "linear-gradient(90deg, #ffffff 0%, red 80%)",
         "linear-gradient(90deg, #ffffff 0%, red 50%)",
     ],
     [
-        //anh sang
-        "linear-gradient(to right, #ffffff 0%, #ccc 80%)",
-        "linear-gradient(to right, #ffffff 0%, #fffc00 50%)",
+        // do am
+        "linear-gradient(90deg, #ffffff 0%, blue 80%)", //<50
+        "linear-gradient(90deg, #ffffff 0%, blue 50%)", //>=50
+    ],
+
+    [
+        //khi gas
+        "linear-gradient(to right, #ffffff 0%, pink 80%)",
+        "linear-gradient(to right, #ffffff 0%, pink 50%)",
     ],
     [
-        "linear-gradient(to right, #ffffff 0%, #bbbbbb 80%)",
+        "linear-gradient(to right, #ffffff 0%, #ccc 80%)",
         "linear-gradient(to right, #ffffff 0%, #fffc00 50%)",
-    ], //them
+    ], //anh sang
 ];
 
 function convetTime() {
@@ -44,7 +45,7 @@ function convetTime() {
 
 function getBackgroundColor(index, value) {
     if (index >= 0 && index < color.length) {
-        if (value >= 50) {
+        if (value >= 90) {
             return color[index][1];
         } else {
             return color[index][0];
@@ -67,14 +68,14 @@ const Dashboard = () => {
         setLightState2, //them
     } = useContext(ContextStore);
 
-    const data1 = { data: data.data.slice(0, 3), unit: data.unit.slice(0, 3) };
-    const data2 = { data: data.data.slice(3), unit: data.unit.slice(3) };
+    const data1 = { data: data.data.slice(0, 2), unit: data.unit.slice(0, 2) };
+    const data2 = { data: data.data.slice(2), unit: data.unit.slice(2) };
 
     console.log(data1);
     console.log(data2);
 
-    const datas1 = datas.slice(0, 3);
-    const datas2 = datas.slice(3);
+    const datas1 = datas.slice(0, 2);
+    const datas2 = datas.slice(2);
 
     const handleLightToggle = () => {
         const data = {};
@@ -165,14 +166,14 @@ const Dashboard = () => {
                             labels={labels}
                         />
                     </div>
-                    {/* <div className="chartItem2">
+                    <div className="chartItem2">
                         <Chart
                             className="chart"
                             prop={data2}
                             datas={datas2}
                             labels={labels}
                         />
-                    </div> */}
+                    </div>
                 </div>
 
                 <div className="buttonContainer">

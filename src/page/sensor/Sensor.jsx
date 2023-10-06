@@ -4,18 +4,16 @@ import axios from "axios";
 
 const Sensor = () => {
     const [dataHistory, setDataHistory] = useState([]);
-    // các thuộc tính để filter
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [filteredData, setFilteredData] = useState([]);
     const [humidityFilter, setHumidityFilter] = useState("");
     const [temperatureFilter, setTemperatureFilter] = useState("");
     const [lightFilter, setLightFilter] = useState("");
-    // các thuộc tính để phân trang
     const [maxPage, setMaxPage] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    // thuộc tính để sắp xếp
+    const [sortType, setSortType] = useState("id");
     const [sortOrder, setSortOrder] = useState("desc");
 
     useEffect(() => {
@@ -39,12 +37,12 @@ const Sensor = () => {
             const start = new Date(startDate).getTime();
             const end = new Date(endDate).getTime();
             const meetsHumidityFilter =
-                !humidityFilter || item.humidity >= parseFloat(humidityFilter);
+                !humidityFilter || item.humidity == parseFloat(humidityFilter);
             const meetsTemperatureFilter =
                 !temperatureFilter ||
-                item.temperature >= parseFloat(temperatureFilter);
+                item.temperature == parseFloat(temperatureFilter);
             const meetsLightFilter =
-                !lightFilter || item.light >= parseFloat(lightFilter);
+                !lightFilter || item.light == parseFloat(lightFilter);
 
             if (!startDate || !endDate)
                 return (
@@ -62,13 +60,15 @@ const Sensor = () => {
             );
         });
 
-        // Sắp xếp dữ liệu khi thay đổi sortOrder
         const sortedData = [...filtered];
         sortedData.sort((a, b) => {
+            const valueA = parseFloat(a[sortType]);
+            const valueB = parseFloat(b[sortType]);
+
             if (sortOrder === "asc") {
-                return a.id - b.id;
+                return valueA - valueB;
             } else {
-                return b.id - a.id;
+                return valueB - valueA;
             }
         });
 
@@ -80,11 +80,11 @@ const Sensor = () => {
         humidityFilter,
         temperatureFilter,
         lightFilter,
-        sortOrder, // Thêm sortOrder vào danh sách dependency
+        sortType,
+        sortOrder,
     ]);
 
     useEffect(() => {
-        // Tính số trang tối đa dựa trên số lượng dữ liệu và số lượng mục trên mỗi trang
         setMaxPage(Math.ceil(filteredData.length / itemsPerPage));
     }, [filteredData]);
 
@@ -94,8 +94,13 @@ const Sensor = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const handleSortAsc = () => setSortOrder("asc");
-    const handleSortDesc = () => setSortOrder("desc");
+    const handleSortTypeChange = (event) => {
+        setSortType(event.target.value);
+    };
+
+    const handleSortOrderChange = (event) => {
+        setSortOrder(event.target.value);
+    };
 
     return (
         <div>
@@ -126,7 +131,7 @@ const Sensor = () => {
             </div>
             <div className="sensor-block">
                 <div>
-                    <label>Độ ẩm min: </label>
+                    <label>Độ ẩm: </label>
                     <input
                         type="number"
                         value={humidityFilter}
@@ -134,7 +139,7 @@ const Sensor = () => {
                     />
                 </div>
                 <div>
-                    <label>Nhiệt độ min: </label>
+                    <label>Nhiệt độ: </label>
                     <input
                         type="number"
                         value={temperatureFilter}
@@ -142,7 +147,7 @@ const Sensor = () => {
                     />
                 </div>
                 <div>
-                    <label>Ánh sáng min: </label>
+                    <label>Ánh sáng: </label>
                     <input
                         type="number"
                         value={lightFilter}
@@ -150,10 +155,18 @@ const Sensor = () => {
                     />
                 </div>
             </div>
-            <div className="sort-buttons">
-                {/* Thêm nút sắp xếp tăng dần và giảm dần */}
-                <button onClick={handleSortAsc}>Sắp xếp tăng dần</button>
-                <button onClick={handleSortDesc}>Sắp xếp giảm dần</button>
+            <div className="sort-block">
+                <label>Sắp xếp theo: </label>
+                <select value={sortType} onChange={handleSortTypeChange}>
+                    <option value="id">ID</option>
+                    <option value="humidity">Độ ẩm</option>
+                    <option value="temperature">Nhiệt độ</option>
+                    <option value="light">Ánh sáng</option>
+                </select>
+                <select value={sortOrder} onChange={handleSortOrderChange}>
+                    <option value="asc">Tăng dần</option>
+                    <option value="desc">Giảm dần</option>
+                </select>
             </div>
             <table>
                 <thead>
@@ -163,6 +176,7 @@ const Sensor = () => {
                         <th>Độ ẩm(%)</th>
                         <th>Nhiệt độ(℃)</th>
                         <th>Ánh sáng(lux)</th>
+                        <th>Khí Gas(ppm)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -173,6 +187,7 @@ const Sensor = () => {
                             <td>{item["humidity"]}</td>
                             <td>{item["temperature"]}</td>
                             <td>{item["light"]}</td>
+                            <td>{item["gas"]}</td>
                         </tr>
                     ))}
                 </tbody>

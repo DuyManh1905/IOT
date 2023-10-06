@@ -3,8 +3,8 @@ import { Line } from "react-chartjs-2";
 import { ContextStore } from "../../context/ContextStore";
 
 const colorCodes = [
-    "#0000FF", // Xanh dương
     "#FF0000", // Đỏ
+    "#0000FF", // Xanh dương
     "#FFFF00", // Vàng
     "#008000", // Xanh lá cây
     "#FFA500", // Cam

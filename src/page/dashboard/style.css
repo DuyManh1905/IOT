@@ -19,11 +19,11 @@ body {
 }
 
 .chartItem1 {
-    flex: 2;
+    flex: 3;
 }
 
 .chartItem2 {
-    flex: 2;
+    flex: 3;
 }
 
 canvas {
@@ -82,7 +82,7 @@ canvas {
 
 .buttonContainer {
     background-color: #f0f8ff;
-    flex: 2;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: space-around;

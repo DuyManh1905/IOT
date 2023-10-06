@@ -3,9 +3,10 @@ import axios from "axios";
 
 const State = () => {
     const [actions, setActions] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchDate, setSearchDate] = useState(""); // Thêm state để lưu trữ ngày giờ phút tìm kiếm
 
     const itemsPerPage = 10;
-    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         axios.get("http://localhost:8080/action").then((response) => {
@@ -22,40 +23,49 @@ const State = () => {
         };
     }, []);
 
-    const sortActions = (order) => {
-        // Sắp xếp theo ID dựa vào giá trị của biến 'order'
+    const filterData = () => {
+        let filteredActions = [...actions];
 
-        const sortedActions = [...actions].sort((a, b) => {
-            if (order === "asc") {
-                return a.id - b.id;
-            } else {
-                return b.id - a.id;
-            }
-        });
+        // Kiểm tra nếu người dùng đã nhập thời gian tìm kiếm
+        if (searchDate) {
+            filteredActions = filteredActions.filter((item) =>
+                item.time.includes(searchDate)
+            );
+        }
 
-        setActions(sortedActions);
+        return filteredActions;
     };
 
-    // Tính toán dữ liệu trang hiện tại dựa trên currentPage và itemsPerPage
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = actions.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filterData().slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const maxPage = Math.ceil(actions.length / itemsPerPage);
+    const maxPage = Math.ceil(filterData().length / itemsPerPage);
+
+    const handleSearch = () => {
+        // Gọi khi người dùng ấn nút tìm kiếm
+        // Ở đây, bạn cần xử lý ngày, giờ và phút nhập vào để tạo chuỗi thời gian tìm kiếm
+        const formattedSearchDate = `${searchDate} 00:00:00`; // Điều chỉnh định dạng thời gian cần tìm kiếm
+        setSearchDate(formattedSearchDate);
+    };
 
     return (
         <div>
             <h1 className="table-heading">Dữ liệu bật tắt đèn</h1>
-            <div className="sort-buttons">
-                <button onClick={() => sortActions("asc")}>
-                    Sắp xếp tăng dần
-                </button>
-                <button onClick={() => sortActions("desc")}>
-                    Sắp xếp giảm dần
-                </button>
+
+            {/* Thêm ô nhập thời gian tìm kiếm */}
+            <div>
+                <input
+                    type="text"
+                    placeholder="Nhập ngày giờ phút (YYYY-MM-DD)"
+                    value={searchDate}
+                    onChange={(e) => setSearchDate(e.target.value)}
+                />
+                <button onClick={handleSearch}>Tìm kiếm</button>
             </div>
+
             <table>
                 <thead>
                     <tr>
@@ -76,7 +86,6 @@ const State = () => {
                     ))}
                 </tbody>
             </table>
-
             <div className="pagination">
                 {Array.from({ length: maxPage }).map((_, index) => {
                     const isStart = index === 0;
